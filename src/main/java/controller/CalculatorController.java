@@ -31,9 +31,6 @@ public class CalculatorController {
 
     @GetMapping("/multiply")
     public String multiply(@RequestParam double num1, @RequestParam double num2) {
-        if (num2 == 0) {
-            return "Умножать на 0 нельзя";
-        }
         return num1 + " * " + num2 + " = " + calculator.multiply(num1, num2);
     }
 
