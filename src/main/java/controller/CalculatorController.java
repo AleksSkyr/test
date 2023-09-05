@@ -13,8 +13,10 @@ import java.util.Objects;
 @RestController
 @RequestMapping("/calculator")
 public class CalculatorController {
-    private final CalculatorService calculator = new CalculatorService();
-
+    private final CalculatorService calculatorService;
+    public CalculatorController(CalculatorService calculatorService) {
+        this.calculatorService = calculatorService;
+    }
 
     @GetMapping()
     public String hello() {
@@ -22,43 +24,36 @@ public class CalculatorController {
     }
 
     @GetMapping("/calculator/plus")
-    public String plus(@RequestParam double num1, @RequestParam double num2) {
-        return num1 + " + " + num2 + " = " + calculator.plus(num1, num2);
+    public String plus(@RequestParam("num1") double num1,
+                       @RequestParam("num2") double num2) {
+        return num1 + " + " + num2 + " = " + calculatorService.plus(num1, num2);
     }
-    @GetMapping("/calculator/plus?num1=5&num2=5")
-    public String plus1(@RequestParam double num1, @RequestParam double num2) {
-        return num1 + " + " + num2 + " = " + calculator.plus1(num1, num2);
-    }
+
 
     @GetMapping("/minus")
-    public String minus(@RequestParam double num1, @RequestParam double num2) {
-        return num1 + " - " + num2 + " = " + calculator.minus(num1, num2);
+    public String minus(@RequestParam("num1") double num1,
+                        @RequestParam("num2") double num2) {
+        return num1 + " - " + num2 + " = " + calculatorService.minus(num1, num2);
     }
 
-    @GetMapping("/minus?num1=5&num2=5")
-    public String minus1(@RequestParam double num1, @RequestParam double num2) {
-        return num1 + " * " + num2 + " = " + calculator.multiply(num1, num2);
-    }
+
 
     @GetMapping("/multiply")
-    public String multiply(@RequestParam double num1, @RequestParam double num2) {
-        return num1 + " * " + num2 + " = " + calculator.multiply(num1, num2);
+    public String multiply(@RequestParam("num1") double num1,
+                           @RequestParam("num2") double num2) {
+        return num1 + " * " + num2 + " = " + calculatorService.multiply(num1, num2);
     }
 
-    @GetMapping("/calculator/multiply?num1=5&num2=5")
-    public String multiply1(@RequestParam double num1, @RequestParam double num2) {
-        return num1 + " * " + num2 + " = " + calculator.multiply(num1, num2);
-    }
+
 
     @GetMapping("/divide")
-    public String divide(@RequestParam double num1, @RequestParam double num2) {
-        if (num2 == 0) {
-            return "Делить на 0 нельзя";
+    public String divide(@RequestParam("num1") double num1,
+                         @RequestParam("num2") double num2) {
+        try {
+            return num1 + " / " + num2 + " = " + calculatorService.divide(num1, num2);
+        }catch (IllegalArgumentException e) {
+            throw new RuntimeException("Делить на 0 нельзя");
         }
-        return num1 + " / " + num2 + " = " + calculator.divide(num1, num2);
     }
-    @GetMapping("/calculator/divide?num1=5&num2=5")
-    public String divide1(@RequestParam double num1, @RequestParam double num2) {
-        return num1 + " / " + num2 + " = " + calculator.divide(num1, num2);
-    }
+
 }
